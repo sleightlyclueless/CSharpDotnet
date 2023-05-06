@@ -1,7 +1,9 @@
-namespace Backend.Entities;
+namespace Backend.Models;
 
 public class Album
 {
+    public int ID { get; private set; }
+
     public string Name { get; set; }
     public long ReleaseDate { get; set; } // unix timestamp
     public string Misc { get; set; }
