@@ -3,40 +3,61 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
 
-//[HttpDelete("id")]
-
 [ApiController]
-[Route("[controller]")]
-public class ArtistController : ControllerBase
-{
-    private readonly ILogger<ArtistController> _logger;
-
-    private DatabaseConnection Connection { get; set; }
-    
-    
-    private readonly Artist[] _artists = {
-        new Artist { ID = 0, FirstName = "Samuel", LastName = "Koob", ArtistName = "AMOGUS", Password = "amongo" },
-        new Artist
-        {
-            ID = 1, FirstName = "Sebastian", LastName = "Zill", ArtistName = "DJ Firehydrant", Password = "amgogo"
-        },
-        new Artist
-        {
-            ID = 2, FirstName = "Mirco", LastName = "Janisch", ArtistName = "ca$h-flow-069", Password = "PekkaRockt"
-        }
-    };
-
-
-    public ArtistController(ILogger<ArtistController> logger)
-    {
-        _logger = logger;
+[Route("artist")]
+public class ArtistController : ControllerBase {
+    public ArtistController(DatabaseConnection _db) {
+        db = _db;
     }
 
+    private DatabaseConnection db { get; }
+
+    // GET /artist
     [HttpGet]
-    public IEnumerable<Artist> GetAllArtists()
-    {
-        return _artists;
+    public async Task<IActionResult> GetAll() {
+        await db.Connection.OpenAsync();
+        var result = await Artist.GetAllAsync(db);
+        return new OkObjectResult(result);
+    }
+
+    // GET /artist/byID
+    [HttpGet("byID")]
+    public async Task<IActionResult> GetByID(int id) {
+        await db.Connection.OpenAsync();
+        Artist? result = await Artist.GetByIDAsync(id, db);
+        return new OkObjectResult(result);
+    }
+
+    // POST /artist
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] Artist artistFromBody) {
+        await db.Connection.OpenAsync();
+        int result = await artistFromBody.InsertAsync(db);
+        return new OkObjectResult(result);
+    }
+
+    // PUT /artist/update
+    [HttpPut("update")]
+    public async Task<IActionResult> Update(int id, [FromBody] Artist artistFromBody) {
+        await db.Connection.OpenAsync();
+        Artist? result = await Artist.GetByIDAsync(id, db);
+        result.FirstName = artistFromBody.FirstName;
+        result.LastName = artistFromBody.LastName;
+        result.ArtistName = artistFromBody.ArtistName;
+        result.Password = artistFromBody.Password;
+        
+        int res = await result.UpdateAsync(db);
+        return new OkObjectResult(res);
     }
     
-
+    // DELETE /artist/delete
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await db.Connection.OpenAsync();
+        Artist result = await Artist.GetByIDAsync(id, db);
+        await result.DeleteAsync(db);
+        
+        return new OkObjectResult(result);
+    }
 }
