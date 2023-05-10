@@ -9,6 +9,11 @@ namespace Backend.Controllers;
 [Route("[controller]")]
 public class ArtistController : ControllerBase
 {
+    private readonly ILogger<ArtistController> _logger;
+
+    private DatabaseConnection Connection { get; set; }
+    
+    
     private readonly Artist[] _artists = {
         new Artist { ID = 0, FirstName = "Samuel", LastName = "Koob", ArtistName = "AMOGUS", Password = "amongo" },
         new Artist
@@ -20,9 +25,7 @@ public class ArtistController : ControllerBase
             ID = 2, FirstName = "Mirco", LastName = "Janisch", ArtistName = "ca$h-flow-069", Password = "PekkaRockt"
         }
     };
-    
 
-    private readonly ILogger<ArtistController> _logger;
 
     public ArtistController(ILogger<ArtistController> logger)
     {
@@ -35,9 +38,5 @@ public class ArtistController : ControllerBase
         return _artists;
     }
     
-    [HttpGet]
-    public IActionResult MyGetMethod()
-    {
-        // Code for your GET method
-    }
+
 }
