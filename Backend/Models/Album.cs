@@ -5,29 +5,21 @@ using MySqlConnector;
 namespace Backend.Models;
 
 public class Album {
+
+    public int AlbumID { get; init; }
+    public string AlbumName { get; set; }
+    public long ReleaseDate { get; set; } // unix timestamp
+    public string Misc { get; set; }
+    public int ArtistID { get; set; }
     
-    private Album(DatabaseConnection _db) {
-        db = _db;
-    }
-
-    private int AlbumID { get; init; }
-
-    private string AlbumName { get; init; }
-    private long ReleaseDate { get; init; } // unix timestamp
-    private string Misc { get; init; }
-
-    private int ArtistID { get; init; }
-
-    private DatabaseConnection db { get; }
-
     #region Misc
 
-    private async Task<List<Album>> ReturnAllAsync(DbDataReader _reader) {
+    private static async Task<List<Album>> ReturnAllAsync(DbDataReader _reader, DatabaseConnection _db) {
         var albums = new List<Album>();
 
         await using (_reader) {
             while (await _reader.ReadAsync()) {
-                Album album = new(db) {
+                Album album = new() {
                     AlbumID = _reader.GetInt32(0),
                     ReleaseDate = _reader.GetInt64(1),
                     Misc = _reader.GetString(2),
@@ -46,27 +38,27 @@ public class Album {
     #region CRUD
 
     //READ
-    public async Task<List<Album>> GetAllAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public static async Task<List<Album>> GetAllAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"SELECT * FROM album;";
-        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync(), _db);
     }
 
     //READ
-    public async Task<Album> GetByIDAsync(int _albumID) {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public static async Task<Album> GetByIDAsync(int _albumID, DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"SELECT * FROM album WHERE albumID = @albumID;";
         BindID(cmd, _albumID);
 
-        var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+        var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync(), _db);
         return result.Count > 0 ? result[0] : null;
     }
     
     //todo: get all albums of artists
 
     //CREATE
-    public async Task<int> InsertAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public async Task<int> InsertAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"INSERT INTO album (releaseDate, misc, albumName, artistID) VALUES (@releaseDate, @misc, @albumName, @artistID);";
         BindParameter(cmd);
@@ -75,8 +67,8 @@ public class Album {
     }
 
     //UPDATE
-    public async Task<int> UpdateAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public async Task<int> UpdateAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"UPDATE album SET releaseDate=@releaseDate, misc=@misc, albumName=@albumName, artistID=@artistID WHERE albumID=@albumID;";
         BindParameter(cmd);
@@ -86,8 +78,8 @@ public class Album {
     }
 
     //DELETE
-    public async Task DeleteAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public async Task DeleteAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"DELETE FROM album WHERE albumID = @albumID;";
         BindID(cmd, AlbumID);
 
@@ -98,7 +90,7 @@ public class Album {
 
     #region Binding
 
-    private void BindID(MySqlCommand _cmd, int _id) {
+    private static void BindID(MySqlCommand _cmd, int _id) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@albumID",
             DbType = DbType.Int32,
