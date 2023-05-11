@@ -14,7 +14,7 @@ public class Album {
     
     #region Misc
 
-    private static async Task<List<Album>> ReturnAllAsync(DbDataReader _reader, DatabaseConnection _db) {
+    private static async Task<List<Album>> ReturnAllAsync(DbDataReader _reader) {
         var albums = new List<Album>();
 
         await using (_reader) {
@@ -41,7 +41,7 @@ public class Album {
     public static async Task<List<Album>> GetAllAsync(DatabaseConnection _db) {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"SELECT * FROM album;";
-        return await ReturnAllAsync(await cmd.ExecuteReaderAsync(), _db);
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
 
     //READ
@@ -50,7 +50,7 @@ public class Album {
         cmd.CommandText = @"SELECT * FROM album WHERE albumID = @albumID;";
         BindID(cmd, _albumID);
 
-        var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync(), _db);
+        var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
         return result.Count > 0 ? result[0] : null;
     }
     

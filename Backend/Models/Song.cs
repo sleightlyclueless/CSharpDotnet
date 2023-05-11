@@ -5,26 +5,19 @@ using MySqlConnector;
 namespace Backend.Models;
 
 public class Song {
-    private Song(DatabaseConnection _db) {
-        db = _db;
-    }
-
     public int SongID { get; init; }
-
-    public string Title { get; init; }
-    public int Length { get; init; }
-    private int AlbumID { get; init; }
-
-    private DatabaseConnection db { get; }
-
+    public string Title { get; set; }
+    public int Length { get; set; }
+    public int AlbumID { get; set; }
+    
     #region Misc
 
-    private async Task<List<Song>> ReturnAllAsync(DbDataReader _reader) {
+    private static async Task<List<Song>> ReturnAllAsync(DbDataReader _reader) {
         var songs = new List<Song>();
 
         await using (_reader) {
             while (await _reader.ReadAsync()) {
-                Song song = new(db) {
+                Song song = new() {
                     SongID = _reader.GetInt32(0),
                     Title = _reader.GetString(1),
                     Length = _reader.GetInt32(2),
@@ -42,15 +35,15 @@ public class Song {
     #region CRUD
 
     //READ
-    public async Task<List<Song>> GetAllAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public static async Task<List<Song>> GetAllAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"SELECT * FROM song;";
         return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
 
     //READ
-    public async Task<Song> GetByIDAsync(int _songID) {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public static async Task<Song> GetByIDAsync(int _songID, DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"SELECT * FROM song WHERE songID = @songID;";
         BindID(cmd, _songID);
 
@@ -62,8 +55,8 @@ public class Song {
     //todo: get all songs of album
 
     //CREATE
-    public async Task<int> InsertAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public async Task<int> InsertAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"INSERT INTO song (title, length, albumID) VALUES (@title, @length, @albumID);";
         BindParameter(cmd);
@@ -72,8 +65,8 @@ public class Song {
     }
 
     //UPDATE
-    public async Task<int> UpdateAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public async Task<int> UpdateAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"UPDATE song SET title=@title, length=@length, albumID=@albumID WHERE songID=@songID;";
         BindParameter(cmd);
@@ -83,8 +76,8 @@ public class Song {
     }
 
     //DELETE
-    public async Task DeleteAsync() {
-        await using MySqlCommand cmd = db.Connection.CreateCommand();
+    public async Task DeleteAsync(DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"DELETE FROM song WHERE songID = @songID;";
         BindID(cmd, SongID);
 
@@ -95,7 +88,7 @@ public class Song {
 
     #region Binding
 
-    private void BindID(MySqlCommand _cmd, int _id) {
+    private static void BindID(MySqlCommand _cmd, int _id) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@songID",
             DbType = DbType.Int32,

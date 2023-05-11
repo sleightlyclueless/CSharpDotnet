@@ -19,7 +19,7 @@ public class Artist
 
     #region Misc
 
-    private static async Task<List<Artist>> ReturnAllAsync(DbDataReader _reader, DatabaseConnection _db)
+    private static async Task<List<Artist>> ReturnAllAsync(DbDataReader _reader)
     {
         var artists = new List<Artist>();
 
@@ -51,7 +51,7 @@ public class Artist
     {
         await using var cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"SELECT * FROM artist;";
-        return await ReturnAllAsync(await cmd.ExecuteReaderAsync(), _db);
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
 
     //READ
@@ -61,7 +61,7 @@ public class Artist
         cmd.CommandText = @"SELECT * FROM artist WHERE artistID = @artistID;";
         BindID(cmd, _artistID);
 
-        var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync(), _db);
+        var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
         return result.Count > 0 ? result[0] : null;
     }
 
