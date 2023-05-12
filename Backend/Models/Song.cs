@@ -51,15 +51,62 @@ public class Song {
         return result.Count > 0 ? result[0] : null;
     }
     
-    //todo: get all songs of artists
-    //todo: get all songs of album
+    //get by artist
+    //READ
+    //todo
+    public static async Task<List<Song>> GetAllByArtistID(int _id, DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
+        cmd.CommandText =
+            @"SELECT * FROM `song` WHERE `albumId` IN((
+                SELECT `albumId` FROM `album` WHERE `artistID` = @artistId));";
+        BindArtistID(cmd, _id);
+        
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+    }
+    
+    //READ
+    //todo
+    public static async Task<List<Song>> GetAllByArtistName(string _name, DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
+        cmd.CommandText =
+            @"SELECT * FROM `song` WHERE `albumId` IN( (
+                SELECT `albumId` FROM `album` WHERE `artistID`= (
+                    SELECT `artistId` FROM `artist` WHERE `aName` = @artistName)));";
+        BindArtistName(cmd, _name);
+        
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+    }
+    
+    //get by album
+    //READ
+    //todo
+    public static async Task<List<Song>> GetAllByAlbumID(int _id, DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
+        cmd.CommandText = @"SELECT * FROM `song` WHERE `albumId` = @albumID;";
+        BindAlbumID(cmd, _id);
+        
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+    }
+    
+    //READ
+    //todo
+    public static async Task<List<Song>> GetAllByAlbumName(string _name, DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
+        cmd.CommandText =
+            @"SELECT * FROM `song` WHERE `albumId` = (
+                SELECT `albumId` FROM `album` where `albumName` =  @albumName);";
+        BindAlbumName(cmd, _name);
+        
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+    }
+    
 
     //CREATE
     public async Task<int> InsertAsync(DatabaseConnection _db) {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"INSERT INTO song (title, length, albumID) VALUES (@title, @length, @albumID);";
-        BindParameter(cmd);
+        BindToCurrentValues(cmd);
 
         return DatabaseConnection.ExecuteCreateCommand(cmd).Result;
     }
@@ -69,7 +116,7 @@ public class Song {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"UPDATE song SET title=@title, length=@length, albumID=@albumID WHERE songID=@songID;";
-        BindParameter(cmd);
+        BindToCurrentValues(cmd);
         BindID(cmd, SongID);
 
         return DatabaseConnection.ExecuteUpdateCommand(cmd).Result;
@@ -95,23 +142,59 @@ public class Song {
             Value = _id
         });
     }
-
-    private void BindParameter(MySqlCommand _cmd) {
+    
+    private static void BindArtistID(MySqlCommand _cmd, int _id) {
+        _cmd.Parameters.Add(new MySqlParameter {
+            ParameterName = "@artistId",
+            DbType = DbType.Int32,
+            Value = _id
+        });
+    }
+    
+    private static void BindArtistName(MySqlCommand _cmd, string _name) {
+        _cmd.Parameters.Add(new MySqlParameter {
+            ParameterName = "@artistName",
+            DbType = DbType.String,
+            Value = _name
+        });
+    }
+    
+    private static void BindTitle(MySqlCommand _cmd, string _title) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@title",
             DbType = DbType.String,
-            Value = Title
+            Value = _title
         });
+    }
+    
+    private static void BindLength(MySqlCommand _cmd, int _length) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@length",
             DbType = DbType.Int32,
-            Value = Length
+            Value = _length
         });
+    }
+    
+    private static void BindAlbumID(MySqlCommand _cmd, int _id) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@albumID",
             DbType = DbType.String,
-            Value = AlbumID
+            Value = _id
         });
+    }
+    
+    private static void BindAlbumName(MySqlCommand _cmd, string _name) {
+        _cmd.Parameters.Add(new MySqlParameter {
+            ParameterName = "@albumName",
+            DbType = DbType.String,
+            Value = _name
+        });
+    }
+
+    private void BindToCurrentValues(MySqlCommand _cmd) {
+        BindTitle(_cmd, Title);
+        BindLength(_cmd, Length);
+        BindAlbumID(_cmd, AlbumID);
     }
 
     #endregion
