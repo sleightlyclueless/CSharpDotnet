@@ -22,11 +22,35 @@ public class AlbumController : ControllerBase
         return new OkObjectResult(result);
     }
     
-    // GET /album/byID
-    [HttpGet("byID")]
+    // GET /album/getByID
+    [HttpGet("getByID")]
     public async Task<IActionResult> GetByID(int id) {
         await db.Connection.OpenAsync();
         Album? result = await Album.GetByIDAsync(id, db);
+        return new OkObjectResult(result);
+    }
+    
+    // GET /album/getByName
+    [HttpGet("getByName")]
+    public async Task<IActionResult> GetByName(string name) {
+        await db.Connection.OpenAsync();
+        var result = await Album.GetByNameAsync(name, db);
+        return new OkObjectResult(result);
+    }
+    
+    // GET /album/getAllByArtistID
+    [HttpGet("getAllByArtistID")]
+    public async Task<IActionResult> GetAllByArtistID(int id) {
+        await db.Connection.OpenAsync();
+        var result = await Album.GetAllByArtistIDAsync(id, db);
+        return new OkObjectResult(result);
+    }
+    
+    // GET /album/getAllByArtistName
+    [HttpGet("getAllByArtistName")]
+    public async Task<IActionResult> GetAllByArtistName(string name) {
+        await db.Connection.OpenAsync();
+        var result = await Album.GetAllByArtistNameAsync(name, db);
         return new OkObjectResult(result);
     }
     
