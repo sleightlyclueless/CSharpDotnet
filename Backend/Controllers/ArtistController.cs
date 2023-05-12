@@ -21,10 +21,18 @@ public class ArtistController : ControllerBase {
     }
 
     // GET /artist/byID
-    [HttpGet("byID")]
+    [HttpGet("getByID")]
     public async Task<IActionResult> GetByID(int id) {
         await db.Connection.OpenAsync();
         Artist? result = await Artist.GetByIDAsync(id, db);
+        return new OkObjectResult(result);
+    }
+    
+    // GET /artist/getByName
+    [HttpGet("getByName")]
+    public async Task<IActionResult> GetByName(string name) {
+        await db.Connection.OpenAsync();
+        var result = await Artist.GetByNameAsync(name, db);
         return new OkObjectResult(result);
     }
 

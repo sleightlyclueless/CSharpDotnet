@@ -53,6 +53,15 @@ public class Artist
         cmd.CommandText = @"SELECT * FROM artist;";
         return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
+    
+    //todo
+    public static async Task<List<Artist>> GetByNameAsync(string _name, DatabaseConnection _db)
+    {
+        await using var cmd = _db.Connection.CreateCommand();
+        cmd.CommandText = @"SELECT * FROM `artist` WHERE `aName` = @aName;";
+        BindArtistName(cmd, _name);
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+    }
 
     //READ
     public static async Task<Artist> GetByIDAsync(int _artistID, DatabaseConnection _db)
@@ -71,7 +80,7 @@ public class Artist
         await using var cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"INSERT INTO artist (fName, lName, aName, password) VALUES (@fName, @lName, @aName, @password);";
-        BindParameter(cmd);
+        BindToCurrentValues(cmd);
 
         return DatabaseConnection.ExecuteCreateCommand(cmd).Result;
     }
@@ -82,7 +91,7 @@ public class Artist
         await using var cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"UPDATE artist SET fName=@fName, lName=@lName, aName=@aName, password=@password WHERE artistID=@artistID;";
-        BindParameter(cmd);
+        BindToCurrentValues(cmd);
         BindID(cmd, ArtistID);
 
         return DatabaseConnection.ExecuteUpdateCommand(cmd).Result;
@@ -111,33 +120,53 @@ public class Artist
             Value = _id
         });
     }
-
-    private void BindParameter(MySqlCommand _cmd)
+    
+    private static void BindFirstName(MySqlCommand _cmd, string _fName)
     {
         _cmd.Parameters.Add(new MySqlParameter
         {
             ParameterName = "@fName",
             DbType = DbType.Int64,
-            Value = FirstName
+            Value = _fName
         });
+    }
+    
+    private static void BindLastName(MySqlCommand _cmd, string _lName)
+    {
         _cmd.Parameters.Add(new MySqlParameter
         {
             ParameterName = "@lName",
             DbType = DbType.String,
-            Value = LastName
+            Value = _lName
         });
+    }
+    
+    private static void BindArtistName(MySqlCommand _cmd, string _aName)
+    {
         _cmd.Parameters.Add(new MySqlParameter
         {
             ParameterName = "@aName",
             DbType = DbType.String,
-            Value = ArtistName
+            Value = _aName
         });
+    }
+    
+    private static void BindPassword(MySqlCommand _cmd, string _password)
+    {
         _cmd.Parameters.Add(new MySqlParameter
         {
             ParameterName = "@password",
             DbType = DbType.String,
-            Value = Password
+            Value = _password
         });
+    }
+
+    private void BindToCurrentValues(MySqlCommand _cmd)
+    {
+        BindFirstName(_cmd, FirstName);
+        BindLastName(_cmd, LastName);
+        BindArtistName(_cmd, ArtistName);
+        BindPassword(_cmd, Password);
     }
 
     #endregion
