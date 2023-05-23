@@ -27,7 +27,7 @@ public class ArtistController : ControllerBase {
         Artist? result = await Artist.GetByIDAsync(id, db);
         return new OkObjectResult(result);
     }
-    
+
     // GET /artist/getByName
     [HttpGet("getByName")]
     public async Task<IActionResult> GetByName(string name) {
@@ -53,19 +53,18 @@ public class ArtistController : ControllerBase {
         result.LastName = artistFromBody.LastName;
         result.ArtistName = artistFromBody.ArtistName;
         result.Password = artistFromBody.Password;
-        
+
         int res = await result.UpdateAsync(db);
         return new OkObjectResult(res);
     }
-    
+
     // DELETE /artist/delete
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete(int id)
-    {
+    public async Task<IActionResult> Delete(int id) {
         await db.Connection.OpenAsync();
         Artist result = await Artist.GetByIDAsync(id, db);
         await result.DeleteAsync(db);
-        
+
         return new OkObjectResult(result);
     }
 }

@@ -9,7 +9,7 @@ public class Song {
     public string Title { get; set; }
     public int Length { get; set; }
     public int AlbumID { get; set; }
-    
+
     #region Misc
 
     private static async Task<List<Song>> ReturnAllAsync(DbDataReader _reader) {
@@ -51,21 +51,28 @@ public class Song {
         return result.Count > 0 ? result[0] : null;
     }
     
+    //READ
+    public static async Task<List<Song>> GetAllByTitle(string _title, DatabaseConnection _db) {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
+        cmd.CommandText = @"SELECT * FROM song WHERE title = @title";
+        BindTitle(cmd, _title);
+
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+    }
+
     //get by artist
     //READ
-    //todo
     public static async Task<List<Song>> GetAllByArtistID(int _id, DatabaseConnection _db) {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"SELECT * FROM `song` WHERE `albumId` IN((
                 SELECT `albumId` FROM `album` WHERE `artistID` = @artistId));";
         BindArtistID(cmd, _id);
-        
+
         return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
-    
+
     //READ
-    //todo
     public static async Task<List<Song>> GetAllByArtistName(string _name, DatabaseConnection _db) {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
@@ -73,33 +80,31 @@ public class Song {
                 SELECT `albumId` FROM `album` WHERE `artistID`= (
                     SELECT `artistId` FROM `artist` WHERE `aName` = @artistName)));";
         BindArtistName(cmd, _name);
-        
+
         return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
-    
+
     //get by album
     //READ
-    //todo
     public static async Task<List<Song>> GetAllByAlbumID(int _id, DatabaseConnection _db) {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText = @"SELECT * FROM `song` WHERE `albumId` = @albumID;";
         BindAlbumID(cmd, _id);
-        
+
         return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
-    
+
     //READ
-    //todo
     public static async Task<List<Song>> GetAllByAlbumName(string _name, DatabaseConnection _db) {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
         cmd.CommandText =
             @"SELECT * FROM `song` WHERE `albumId` = (
                 SELECT `albumId` FROM `album` where `albumName` =  @albumName);";
         BindAlbumName(cmd, _name);
-        
+
         return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
-    
+
 
     //CREATE
     public async Task<int> InsertAsync(DatabaseConnection _db) {
@@ -142,7 +147,7 @@ public class Song {
             Value = _id
         });
     }
-    
+
     private static void BindArtistID(MySqlCommand _cmd, int _id) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@artistId",
@@ -150,7 +155,7 @@ public class Song {
             Value = _id
         });
     }
-    
+
     private static void BindArtistName(MySqlCommand _cmd, string _name) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@artistName",
@@ -158,7 +163,7 @@ public class Song {
             Value = _name
         });
     }
-    
+
     private static void BindTitle(MySqlCommand _cmd, string _title) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@title",
@@ -166,7 +171,7 @@ public class Song {
             Value = _title
         });
     }
-    
+
     private static void BindLength(MySqlCommand _cmd, int _length) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@length",
@@ -174,7 +179,7 @@ public class Song {
             Value = _length
         });
     }
-    
+
     private static void BindAlbumID(MySqlCommand _cmd, int _id) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@albumID",
@@ -182,7 +187,7 @@ public class Song {
             Value = _id
         });
     }
-    
+
     private static void BindAlbumName(MySqlCommand _cmd, string _name) {
         _cmd.Parameters.Add(new MySqlParameter {
             ParameterName = "@albumName",
