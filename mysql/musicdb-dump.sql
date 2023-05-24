@@ -43,7 +43,7 @@ CREATE TABLE `album` (
 
 LOCK TABLES `album` WRITE;
 /*!40000 ALTER TABLE `album` DISABLE KEYS */;
-INSERT INTO `album` VALUES (1,1683374800,'','SUZZY BEATS',1),(2,1683372800,'Christmas Edition','Last Christmas',1),(3,1683375327,'Deluxe Edition','Sebibel',2),(4,1683335963,'','Mircos Beats',3),(5,1683305728,'$$$','Ca$h in the club',3),(6,1683330582,'','Adams ästhetische Äpfel',4),(7,1683312495,'','Alle Jahre',4),(8,1683204863,'','Come closer',6),(9,1683369702,'','Chrisis Fire',6),(10,1683313900,'WasweißichaltermirgehendieIdeenaus','RizzPlays',8);
+INSERT INTO `album` VALUES (1,1683374800,'','SUZZY BEATS',1),(2,1683372800,'Christmas Edition','Last Christmas',2),(3,1683375327,'Deluxe Edition','Sebibel',2),(4,1683335963,'','Mircos Beats',3),(5,1683305728,'$$$','Ca$h in the club',3),(6,1683330582,'','Adams ästhetische Äpfel',4),(7,1683312495,'','Alle Jahre',4),(8,1683204863,'','Come closer',6),(9,1683369702,'','Chrisis Fire',6),(10,1683313900,'WasweißichaltermirgehendieIdeenaus','RizzPlays',8);
 /*!40000 ALTER TABLE `album` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +91,7 @@ CREATE TABLE `song` (
   UNIQUE KEY `SONG_PK` (`songID`),
   KEY `song-album_idx` (`albumID`),
   CONSTRAINT `song-album` FOREIGN KEY (`albumID`) REFERENCES `album` (`albumID`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +100,7 @@ CREATE TABLE `song` (
 
 LOCK TABLES `song` WRITE;
 /*!40000 ALTER TABLE `song` DISABLE KEYS */;
-INSERT INTO `song` VALUES (1,'Arrival in Space',120,1),(2,'Imposters everywhere',180,1),(3,'The lights are out',150,1),(4,'They fall like flies',144,1),(5,'Ejected by false friends',100,1),(6,'Electrical genocide',80,1),(7,'Betrayed in Cams',200,1),(8,'The imposters won',200,1),(9,'How could this happen to me',190,1),(10,'Sebis-Song1',200,2),(11,'Sebis last song already',320,2),(12,'Cash starts flowing',120,3),(13,'Ca$h keeps going',130,3),(14,'Casch stops showing',140,3),(15,'The garden of eden',400,4),(16,'God kicked us out :(',110,4),(17,'Chrisis Welle',200,6),(18,'Christians Strom',220,6),(19,'Christians Sturm',215,6),(20,'Toll, die Socken sind nass...',10,6),(21,'Ears are rizzing',154,7),(22,'Hide your... and shes gone',143,7),(23,'Ne ernsthaft keine Ahnung',143,10),(24,'WIRKLICH',143,10);
+INSERT INTO `song` VALUES (1,'Arrival in Space',120,1),(2,'Imposters everywhere',180,1),(3,'The lights are out',150,1),(4,'They fall like flies',144,1),(5,'Ejected by false friends',100,1),(6,'Electrical genocide',80,1),(7,'Betrayed in Cams',200,1),(8,'The imposters won',200,1),(9,'How could this happen to me',190,1),(10,'Sebis-Song1',200,2),(11,'Sebis last song already',320,2),(12,'Cash starts flowing',120,5),(13,'Ca$h keeps going',130,5),(14,'Casch stops showing',140,5),(15,'The garden of eden',400,6),(16,'God kicked us out :(',110,6),(17,'Chrisis Welle',200,9),(18,'Christians Strom',220,9),(19,'Christians Sturm',215,9),(20,'Toll, die Socken sind nass...',10,9),(21,'Ne ernsthaft keine Ahnung',143,10),(22,'WIRKLICH',143,10);
 /*!40000 ALTER TABLE `song` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -113,4 +113,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-24 20:25:33
+-- Dump completed on 2023-05-24 20:48:45
