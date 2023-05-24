@@ -140,7 +140,6 @@ namespace frontend
             data.Wait();
             // Auswerten der Response
             var response = data.Result;
-            //MessageBox.Show(response);
 
             Artist ar = JsonConvert.DeserializeObject<Artist>(response);
             return ar;
@@ -294,8 +293,6 @@ namespace frontend
             if (selected != null && selected.albumName != null)
             {
                 Artist a = GetArtistFromAlbum(selected);
-
-                MessageBox.Show(selected.albumID.ToString());
 
                 AlbumInfo wnd = new AlbumInfo(selected.albumName,a.artistName, selected.misc, selected.albumID, selected.artistID);
 

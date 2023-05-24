@@ -40,8 +40,6 @@ namespace frontend
             data.Wait();
 
             string response = data.Result;
-            //MessageBox.Show(AlbumID.ToString());
-            //MessageBox.Show(response);
             if (string.Compare(response, "-1") == 0 || response == string.Empty || response == null) // Invalid response
             {
                 MessageBox.Show("No connection to sus");
@@ -107,8 +105,6 @@ namespace frontend
         private void ShowArtist(object sender, RoutedEventArgs e)
         {
             Artist a = thisArtist;
-
-            MessageBox.Show(a.artistID.ToString());
 
             ArtistInfo ai = new ArtistInfo(a.artistID, a.firstName, a.lastName, a.artistName);
             ai.Show();
