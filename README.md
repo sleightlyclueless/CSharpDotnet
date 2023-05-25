@@ -33,7 +33,7 @@ Note2: For git history pay in mind the other branches we worked on<br>
 
 ## Step 4: Run the WPF APP
 - Open the project/frontend/frontend.csproj with your Visual Studio 2022 and all .NET components already installed
-    - You might need to add the extension newtonsoft.json at Extensions->Manage
+    - You might need to install the NuGet Package "Newtonsoft.Json"
 - Run the "frontend" config and the App opens and interacts with the backend->db
 
 
