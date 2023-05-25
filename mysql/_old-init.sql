@@ -18,7 +18,7 @@ CREATE TABLE `artist` (
   `artistID` int NOT NULL AUTO_INCREMENT,
   `fName` varchar(32) DEFAULT NULL,
   `lName` varchar(32) DEFAULT NULL,
-  `aName` varchar(32) NOT NULL,
+  `aName` varchar(32) NOT NULL UNIQUE,
   `password` varchar(256) NOT NULL,
   PRIMARY KEY (`artistID`),
   UNIQUE KEY `ARTIST_PK` (`artistID`)
