@@ -30,6 +30,9 @@ namespace frontend
         public string lastName { get; set; }
         public string artistName { get; set; }
 
+        AlbumInfo albumInfo;
+        SongInfo songInfo;
+
         Album getAlbumByID(int albumId)
         {
             // albumById - localhost addr
@@ -115,9 +118,11 @@ namespace frontend
                
                 Album albumFromSong = getAlbumByID(selected.albumID);
 
-                SongInfo wnd = new SongInfo(selected.title, selected.length, selected.albumID, albumFromSong.albumName, artistName, id);
+                if (songInfo != null) { songInfo.Close(); }
 
-                wnd.Show();
+                songInfo = new SongInfo(selected.title, selected.length, selected.albumID, albumFromSong.albumName, artistName, id);
+
+                songInfo.Show();
             }
         }
 
@@ -126,12 +131,28 @@ namespace frontend
             Album selected = (Album)LB_Albums.SelectedItem;
             if (selected != null && selected.albumName != null)
             {
-                
 
-                AlbumInfo wnd = new AlbumInfo(selected.albumName, artistName, selected.misc, selected.albumID, id);
+                if(albumInfo != null) { albumInfo.Close(); }
 
-                wnd.Show();
+                albumInfo = new AlbumInfo(selected.albumName, artistName, selected.misc, selected.albumID, id);
+
+                albumInfo.Show();
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Your code here
+            // This event is fired when the window is being closed, but it can be canceled by setting e.Cancel = true
+            if(albumInfo != null)
+            {
+                albumInfo.Close();
+            }
+            if(songInfo != null)
+            { 
+                songInfo.Close(); 
+            }
+
         }
 
     }

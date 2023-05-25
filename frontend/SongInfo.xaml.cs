@@ -30,6 +30,9 @@ namespace frontend
         public string ArtistName;
         public int ArtistID;
 
+        private ArtistInfo artistInfo;
+        private AlbumInfo albumInfo;
+
 
         public SongInfo(string songTitle, int duration, int albumID, string albumName, string artistName, int artistID) // Can only parse primitive datatypes
         {
@@ -67,9 +70,11 @@ namespace frontend
                 Album a = JsonConvert.DeserializeObject<Album>(response);
                 if (a != null)
                 {
-                    // Liste Setzen
-                    AlbumInfo ai = new AlbumInfo(a.albumName, this.ArtistName, a.misc, a.albumID, a.artistID);
-                    ai.Show();
+
+                    if (albumInfo != null) { albumInfo.Close(); }
+
+                    albumInfo = new AlbumInfo(a.albumName, this.ArtistName, a.misc, a.albumID, a.artistID);
+                    albumInfo.Show();
                 }
 
             }
@@ -92,11 +97,20 @@ namespace frontend
                 if (a != null)
                 {
                     // Liste Setzen
-                    ArtistInfo ai = new ArtistInfo(a.artistID,a.firstName, a.lastName, a.artistName);
-                    ai.Show();
+                    if (artistInfo != null) { artistInfo.Close(); }
+
+                    artistInfo = new ArtistInfo(a.artistID,a.firstName, a.lastName, a.artistName);
+                    artistInfo.Show();
                 }
 
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Your code here
+            if (artistInfo != null) { artistInfo.Close(); }
+            if (albumInfo != null) { albumInfo.Close(); }
         }
     }
 }

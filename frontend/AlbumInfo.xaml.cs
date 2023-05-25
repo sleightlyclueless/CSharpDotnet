@@ -33,6 +33,9 @@ namespace frontend
         //private Album thisAlbum;
         private Artist thisArtist;
 
+        private SongInfo songInfo;
+        private ArtistInfo artistInfo;
+
         
         private List<Song> getAlbumSongs() // Get a list of songs from the album (by id)
         {
@@ -94,20 +97,30 @@ namespace frontend
         {
             Song selected = (Song)LB_Songs.SelectedItem;
             if (selected != null && selected.title != null)
-            {                            
+            {
 
-                SongInfo wnd = new SongInfo(selected.title, selected.length, selected.albumID, AlbumName, thisArtist.artistName, thisArtist.artistID);
+                if (songInfo != null) { songInfo.Close(); }
+                songInfo = new SongInfo(selected.title, selected.length, selected.albumID, AlbumName, thisArtist.artistName, thisArtist.artistID);
 
-                wnd.Show();
+                songInfo.Show();
             }
         }
 
         private void ShowArtist(object sender, RoutedEventArgs e)
         {
+            if (artistInfo != null) { artistInfo.Close(); }
+
             Artist a = thisArtist;
 
-            ArtistInfo ai = new ArtistInfo(a.artistID, a.firstName, a.lastName, a.artistName);
-            ai.Show();
+            artistInfo = new ArtistInfo(a.artistID, a.firstName, a.lastName, a.artistName);
+            artistInfo.Show();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Your code here
+            if(artistInfo != null) { artistInfo.Close(); }
+            if(songInfo != null) { songInfo.Close(); }
         }
     }
 }
