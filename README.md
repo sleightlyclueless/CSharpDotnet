@@ -10,7 +10,7 @@
 
 ## Getting started
 
-how to install and build our app, so that a new developer could get started
+How to install and build our app, so a new developer could get started
 
 Some notes:
 * The ER diagram and the database dump are within the `./mysql/` folder
