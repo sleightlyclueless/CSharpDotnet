@@ -12,7 +12,7 @@ public class DatabaseConnection
 
     public DatabaseConnection()
     {
-        var databaseURL = USE_DEFAULT_DATABASE ? DEFAULT_DATABASE : Environment.GetEnvironmentVariable("DATABASE_URL");
+        string? databaseURL = USE_DEFAULT_DATABASE ? DEFAULT_DATABASE : Environment.GetEnvironmentVariable("DATABASE_URL");
         Connection = new MySqlConnection(databaseURL);
     }
 
@@ -25,7 +25,7 @@ public class DatabaseConnection
             return id;
         } catch (Exception e) {
             await Console.Error.WriteLineAsync(e.ToString());
-            return 0;
+            return -1;
         }
     }
     
@@ -35,6 +35,6 @@ public class DatabaseConnection
         } catch (Exception e) {
             await Console.Error.WriteLineAsync(e.ToString());
         }
-        return 0;
+        return -1;
     }
 }

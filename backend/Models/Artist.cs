@@ -7,9 +7,9 @@ namespace Backend.Models;
 public class Artist {
     public int ArtistID { get; init; }
 
-    public string FirstName { get; set; } //nullable field
+    public string? FirstName { get; set; } //nullable field
 
-    public string LastName { get; set; } //nullable field
+    public string? LastName { get; set; } //nullable field
 
     public string ArtistName { get; set; } // used as username
 
@@ -25,11 +25,18 @@ public class Artist {
             while (await _reader.ReadAsync()) {
                 Artist artist = new() {
                     ArtistID = _reader.GetInt32(0),
-                    FirstName = _reader.GetString(1),
-                    LastName = _reader.GetString(2),
                     ArtistName = _reader.GetString(3),
                     Password = _reader.GetString(4)
                 };
+                
+                if (!_reader.IsDBNull(1)) {
+                    artist.FirstName = _reader.GetString(1);
+                }
+                
+                if (!_reader.IsDBNull(2)) {
+                    artist.LastName = _reader.GetString(2);
+                }
+
                 artists.Add(artist);
             }
         }

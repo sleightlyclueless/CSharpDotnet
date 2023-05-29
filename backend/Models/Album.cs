@@ -22,10 +22,14 @@ public class Album {
                 Album album = new() {
                     AlbumID = _reader.GetInt32(0),
                     ReleaseDate = _reader.GetInt64(1),
-                    Misc = _reader.GetString(2),
                     AlbumName = _reader.GetString(3),
                     ArtistID = _reader.GetInt32(4)
                 };
+
+                if (!_reader.IsDBNull(2)) {
+                    album.Misc = _reader.GetString(2);
+                }
+                
                 albums.Add(album);
             }
         }

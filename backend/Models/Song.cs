@@ -23,6 +23,7 @@ public class Song {
                     Length = _reader.GetInt32(2),
                     AlbumID = _reader.GetInt32(3)
                 };
+                
                 songs.Add(song);
             }
         }
