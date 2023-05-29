@@ -1,5 +1,13 @@
 # MusicDB
 
+- [MusicDB](#musicdb)
+  * [getting started](#getting-started)
+    + [Step 1: Build the Docker container for the database](#step-1--build-the-docker-container-for-the-database)
+    + [Step 2: Fill the database with sample data](#step-2--fill-the-database-with-sample-data)
+    + [Step 3: Run the back-end](#step-3--run-the-back-end)
+    + [Step 4: Run the WPF APP](#step-4--run-the-wpf-app)
+  * [Point Table](#point-table)
+
 ## getting started
 
 how to install and build our app, so that a new developer could get started
