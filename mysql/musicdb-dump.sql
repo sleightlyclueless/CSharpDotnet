@@ -61,8 +61,9 @@ CREATE TABLE `artist` (
   `aName` varchar(32) NOT NULL,
   `password` varchar(256) NOT NULL,
   PRIMARY KEY (`artistID`),
+  UNIQUE KEY `aName` (`aName`),
   UNIQUE KEY `ARTIST_PK` (`artistID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,4 +114,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-24 20:48:45
+-- Dump completed on 2023-05-25 13:33:14
