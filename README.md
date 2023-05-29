@@ -41,7 +41,7 @@ In this example we use the *MySQL Workbench 8.0.33*. You could of course use any
 
 
 ### Step 4: Run the WPF APP
-- Open the `./frontend/frontend.csproj` with your Visual Studio 2022 (with all needed dependencies installed)
+- Open the `./frontend/frontend.csproj` within your Visual Studio 2022 (with all needed dependencies installed)
     - You might need to install the NuGet package `Newtonsoft.Json`
 - Run the `frontend` configuration, which should the app and lets you interact with the back-end and thus the database-
 
