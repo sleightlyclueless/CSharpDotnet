@@ -8,7 +8,7 @@
     + [Step 4: Run the WPF APP](#step-4--run-the-wpf-app)
   * [Point Table](#point-table)
 
-## getting started
+## Getting started
 
 how to install and build our app, so that a new developer could get started
 
