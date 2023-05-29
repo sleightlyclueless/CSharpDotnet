@@ -12,7 +12,7 @@ public class DatabaseConnection
 
     public DatabaseConnection()
     {
-        string? databaseURL = USE_DEFAULT_DATABASE ? DEFAULT_DATABASE : Environment.GetEnvironmentVariable("DATABASE_URL");
+        string? databaseURL = USE_DEFAULT_DATABASE ? DEFAULT_DATABASE : Environment.GetEnvironmentVariable(DATABASE_ENV_VAR);
         Connection = new MySqlConnection(databaseURL);
     }
 
