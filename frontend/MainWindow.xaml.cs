@@ -1,22 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Net;
-using System.Net.Http;
-using Newtonsoft.Json;
-using System.Windows.Controls.Primitives;
-using System.Collections;
+using System.Security.Cryptography;
+using System.Text;
+using System.Security.Policy;
+using Newtonsoft.Json.Linq;
 
 namespace frontend
 {
@@ -31,12 +22,52 @@ namespace frontend
         List<Album> loadedAlbums;
         List<Song> loadedSongs;
         List<Artist> loadedArtists;
+        Artist? loggedInAs = null;
         static string querySearchSongBySubstring = "http://localhost:5073/song/getAllByTitle?title="; // Get all songs containing a substring in title
         static string querySearchArtistBySubstring = "http://localhost:5073/artist/getByName?name="; // get all artists by substr
         static string querySearchAlbumBySubstring = "http://localhost:5073/album/getByName?name=";          // get all albums by substr
         static string queryAlbumByID = "http://localhost:5073/album/getByID?id=";
         static string queryArtistByID = "http://localhost:5073/artist/getByID?id=";
-            
+        static string putArtistByID = "http://localhost:5073/artist/update?id=";
+        static string querySearchArtistByName = "http://localhost:5073/artist/getByName?name=";
+
+        public static async Task postUserToDB(string username, string firstname, string lastname, string pwhash)
+        {
+            var client = new HttpClient();
+
+            JObject jobject = new JObject();
+            jobject["firstName"] = firstname;
+            jobject["username"] = username;
+            jobject["password"] = pwhash;
+            jobject["lastname"] = lastname;
+
+            var jsonData = jobject.ToString();
+            try
+            {
+               
+                
+                // Create the HTTP content with the JSON data
+                HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+                // Send the POST request
+                HttpResponseMessage response = await client.PostAsync(putArtistByID, content);
+
+                // Check the response status
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("POST request was successful");
+                }
+                else
+                {
+                    Console.WriteLine("POST request failed with status code: " + response.StatusCode);
+                }
+               
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Something went wrong while logging in");
+            }
+        }
 
         // http get request to search for string
         public static async Task<string> SearchSongByString(string s)
@@ -131,6 +162,23 @@ namespace frontend
 
             Album al = JsonConvert.DeserializeObject<Album>(response);
             return al;
+        }
+
+        private static Artist getArtistByName(string username)
+        {
+            // Get the artist
+            var data = Task.Run(() => getRequestUrlOneParam(querySearchArtistByName, username));
+            data.Wait();
+            // Auswerten der Response
+            var response = data.Result;
+            
+            if(response == "-1")
+            {
+                return null;
+            }
+
+            List<Artist> ar = JsonConvert.DeserializeObject<List<Artist>>(response);
+            return ar[0];
         }
 
         private static Artist GetArtistFromAlbum(Album album)
@@ -303,6 +351,55 @@ namespace frontend
         private void AmogusButtonClick(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Amogus!");
+        }
+
+        // Login 
+        private void B_Login_Click(object sender, RoutedEventArgs e)
+        {
+            if(loggedInAs == null) // Login
+            {
+                Artist foundArtist = getArtistByName(TB_Username.Text.ToString());
+                if (foundArtist == null)
+                {
+                    MessageBox.Show("Could not find user with that name");
+                    return;
+                }
+
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    // Convert the input string to bytes
+                    byte[] inputBytes = Encoding.UTF8.GetBytes(PB_Password.Password);
+
+                    // Compute the hash
+                    byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+                    // Convert the hash bytes to a hexadecimal string
+                    string hashedInput = BitConverter.ToString(hashBytes).Replace("-", "");
+
+                    //Clipboard.SetText(hashedInput);
+
+                    if (hashedInput == foundArtist.password)
+                    {
+                        loggedInAs = foundArtist;
+                        MessageBox.Show("Logged in as " + loggedInAs.artistName);
+                        // Change functionality
+                        B_Login.Content = "Logout";
+                        TB_LoggedInAs.Text = "Logged in as " + loggedInAs.artistName;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Could not auth");
+                    }
+
+                }
+            }
+            else // logout
+            {
+                loggedInAs = null;
+                B_Login.Content = "Login";
+                TB_LoggedInAs.Text = "";
+            }
+
         }
     }
 }
