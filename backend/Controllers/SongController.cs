@@ -21,7 +21,7 @@ public class SongController : ControllerBase {
     }
 
     // GET /song/getByID
-    [HttpGet("getByID")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetByID(int id) {
         await db.Connection.OpenAsync();
         Song? result = await Song.GetByIDAsync(id, db);
