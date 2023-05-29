@@ -14,7 +14,7 @@ How to install and build our app, so a new developer could get started
 
 Some notes:
 * The ER diagram and the database dump are within the `./mysql/` folder
-* For a proper git history, please pay attention the other branches we worked on
+* For a proper git history, please pay attention to the other branches we worked on
 
 ### Step 1: Build the Docker container for the database
 - Start Docker or the Docker service on your machine
