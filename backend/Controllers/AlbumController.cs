@@ -23,7 +23,7 @@ public class AlbumController : ControllerBase
     }
     
     // GET /album/getByID
-    [HttpGet("getByID")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetByID(int id) {
         await db.Connection.OpenAsync();
         Album? result = await Album.GetByIDAsync(id, db);

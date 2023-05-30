@@ -20,8 +20,8 @@ public class ArtistController : ControllerBase {
         return new OkObjectResult(result);
     }
 
-    // GET /artist/byID
-    [HttpGet("getByID")]
+    // GET /artist/getByID
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetByID(int id) {
         await db.Connection.OpenAsync();
         Artist? result = await Artist.GetByIDAsync(id, db);
