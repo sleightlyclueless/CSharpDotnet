@@ -23,14 +23,14 @@ ALTER TABLE `song` ADD CONSTRAINT `song-album` FOREIGN KEY (`albumID`) REFERENCE
 /* INSERT NEW DEFAULT DATA */
 INSERT INTO `artist`(`fname`, `lName`, `aName`, `password`)
 VALUES
-("Samuel", "Koob", "AMOGUS", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"),               /*1*/
-("Sebastian", "Zill", "DJ Firehydrant", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"),    /*2*/
-("Mirco", "Janisch", "ca$h-flow-069", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"),      /*3*/
-("Adam", "Angst", "Love & Bass", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"),           /*4*/
-("Björn", "Bergmann", "Benderman", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"),         /*5*/
-("Christian", "Crumminger", "Club Masta", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"),  /*6*/
-("Daniel", "Dreißner", "DJ Divertido", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"),     /*7*/
-("Max", ", the man, Mustermann", "MutantBeatz", "$2y$10$dJyJqk4D.5xCt18C/i.YI.dTOv1Dc8Jsmdmfhz4tbTQ/y2b9TSVuq"); /*8*/
+("Samuel", "Koob", "AMOGUS", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"),               /*1*/
+("Sebastian", "Zill", "DJ Firehydrant", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"),    /*2*/
+("Mirco", "Janisch", "ca$h-flow-069", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"),      /*3*/
+("Adam", "Angst", "Love & Bass", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"),           /*4*/
+("Björn", "Bergmann", "Benderman", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"),         /*5*/
+("Christian", "Crumminger", "Club Masta", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"),  /*6*/
+("Daniel", "Dreißner", "DJ Divertido", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"),     /*7*/
+("Max", ", the man, Mustermann", "MutantBeatz", "80C5E536EEC8387CCCAD28B8B17B933832244998D85918ABF18CC9BADA5D4FE9"); /*8*/
 
 INSERT INTO `album`(`releaseDate`, `misc`, `albumName`, `artistID`)
 VALUES
