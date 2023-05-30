@@ -221,6 +221,12 @@ namespace frontend
 
         private void B_Search(object sender, RoutedEventArgs e)
         {
+            if (loggedInAs == null)
+            {
+                MessageBox.Show("You are not logged in");
+                return;
+            }
+            
             string s = TB_SearchInput.Text;
             var dataSongs = Task.Run(() => SearchSongByString(s));
             dataSongs.Wait();
@@ -358,7 +364,12 @@ namespace frontend
         {
             if(loggedInAs == null) // Login
             {
-                Artist foundArtist = getArtistByName(TB_Username.Text.ToString());
+                if (string.IsNullOrWhiteSpace(TB_Username.Text.ToString()) || string.IsNullOrWhiteSpace(PB_Password.Password.ToString()))
+                {
+                    MessageBox.Show("Please provide user & password");
+                    return;
+                }
+                    Artist foundArtist = getArtistByName(TB_Username.Text.ToString());
                 if (foundArtist == null)
                 {
                     MessageBox.Show("Could not find user with that name");
@@ -377,6 +388,9 @@ namespace frontend
                     string hashedInput = BitConverter.ToString(hashBytes).Replace("-", "");
 
                     //Clipboard.SetText(hashedInput);
+
+                    MessageBox.Show(hashedInput);
+                    MessageBox.Show(foundArtist.password);
 
                     if (hashedInput == foundArtist.password)
                     {
@@ -398,8 +412,29 @@ namespace frontend
                 loggedInAs = null;
                 B_Login.Content = "Login";
                 TB_LoggedInAs.Text = "";
+
+                loadedSongs = new List<Song>();
+                loadedArtists = new List<Artist>();
+                loadedAlbums = new List<Album>();
+
+
+                LB_Songs.ItemsSource = loadedSongs; // Den Inhalt der LB auf die liste setzen
+                LB_Songs.DisplayMemberPath = "title"; // das Anzeigeattribut auf Title setzen
+
+                // Gleiches für Album u Artist
+                LB_Albums.ItemsSource = loadedAlbums;
+                LB_Albums.DisplayMemberPath = "albumName";
+
+                LB_Artists.ItemsSource = loadedArtists;
+                LB_Artists.DisplayMemberPath = "artistName";
             }
 
+        }
+
+        private void B_Register_Click(object sender, RoutedEventArgs e)
+        {
+            Register rwnd = new Register();
+            rwnd.Show();
         }
     }
 }

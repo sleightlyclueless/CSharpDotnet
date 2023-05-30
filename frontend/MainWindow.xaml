@@ -52,7 +52,7 @@
                     </UniformGrid>
                     <UniformGrid Grid.Row="3" Columns="2">
                         <Button Grid.Column="0"   Margin="5" Name="B_Login" Click="B_Login_Click">Login</Button>
-                        <Button Grid.Column="1"   Margin="5" Name="B_Register">Register</Button>
+                        <Button Grid.Column="1"   Margin="5" Name="B_Register" Click="B_Register_Click">Register</Button>
                     </UniformGrid>
                 </Grid>
             </Border>
