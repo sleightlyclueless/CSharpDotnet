@@ -36,6 +36,15 @@ public class ArtistController : ControllerBase {
         return new OkObjectResult(result);
     }
 
+    // GET /artist/getByExactName
+    [HttpGet("getByExactName")]
+    public async Task<IActionResult> GetByExactName(string name)
+    {
+        await db.Connection.OpenAsync();
+        var result = await Artist.GetByExactNameAsync(name, db);
+        return new OkObjectResult(result);
+    }
+
     // POST /artist
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Artist artistFromBody) {

@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Security.Policy;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace frontend
 {
@@ -26,6 +27,7 @@ namespace frontend
         static string querySearchSongBySubstring = "http://localhost:5073/song/getAllByTitle?title="; // Get all songs containing a substring in title
         static string querySearchArtistBySubstring = "http://localhost:5073/artist/getByName?name="; // get all artists by substr
         static string querySearchAlbumBySubstring = "http://localhost:5073/album/getByName?name=";          // get all albums by substr
+        static string querySearchArtistByExactName = "http://localhost:5073/artist/getByExactName?name=";
         static string queryAlbumByID = "http://localhost:5073/album/getByID?id=";
         static string queryArtistByID = "http://localhost:5073/artist/getByID?id=";
         static string putArtistByID = "http://localhost:5073/artist/update?id=";
@@ -44,8 +46,6 @@ namespace frontend
             var jsonData = jobject.ToString();
             try
             {
-               
-                
                 // Create the HTTP content with the JSON data
                 HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
@@ -169,15 +169,37 @@ namespace frontend
             // Get the artist
             var data = Task.Run(() => getRequestUrlOneParam(querySearchArtistByName, username));
             data.Wait();
+            
             // Auswerten der Response
             var response = data.Result;
-            
-            if(response == "-1")
+            if (response == "-1" || response == null || response.Count() == 0)
             {
                 return null;
             }
 
             List<Artist> ar = JsonConvert.DeserializeObject<List<Artist>>(response);
+            return ar[0];
+        }
+
+        private static Artist getArtistByExactName(string username)
+        {
+            // Get the artist
+            var data = Task.Run(() => getRequestUrlOneParam(querySearchArtistByExactName, username));
+            data.Wait();
+
+            // Auswerten der Response
+            var response = data.Result;
+            if (response == "-1" || response == null)
+            {
+                return null;
+            }
+
+            List<Artist> ar = JsonConvert.DeserializeObject<List<Artist>>(response);
+            if (ar.Count == 0)
+            {
+                return null;
+            }
+
             return ar[0];
         }
 
@@ -369,7 +391,8 @@ namespace frontend
                     MessageBox.Show("Please provide user & password");
                     return;
                 }
-                    Artist foundArtist = getArtistByName(TB_Username.Text.ToString());
+
+                Artist foundArtist = getArtistByExactName(TB_Username.Text.ToString());
                 if (foundArtist == null)
                 {
                     MessageBox.Show("Could not find user with that name");
@@ -388,9 +411,6 @@ namespace frontend
                     string hashedInput = BitConverter.ToString(hashBytes).Replace("-", "");
 
                     //Clipboard.SetText(hashedInput);
-
-                    MessageBox.Show(hashedInput);
-                    MessageBox.Show(foundArtist.password);
 
                     if (hashedInput == foundArtist.password)
                     {

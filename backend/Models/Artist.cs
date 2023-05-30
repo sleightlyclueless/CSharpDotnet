@@ -63,6 +63,14 @@ public class Artist {
         return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
     }
 
+    public static async Task<List<Artist>> GetByExactNameAsync(string _name, DatabaseConnection _db)
+    {
+        await using MySqlCommand cmd = _db.Connection.CreateCommand();
+        cmd.CommandText = @"SELECT * FROM `artist` WHERE `aName` = @aName;";
+        BindArtistName(cmd, _name);
+        return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+    }
+
     //READ
     public static async Task<Artist> GetByIDAsync(int _artistID, DatabaseConnection _db) {
         await using MySqlCommand cmd = _db.Connection.CreateCommand();
