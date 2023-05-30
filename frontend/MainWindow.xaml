@@ -31,7 +31,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Margin="5" Grid.Row="0" TextWrapping="WrapWithOverflow" TextAlignment="Center">Enter song name, artist name or album name to search:</TextBlock>
-                    <TextBox Name="TB_SearchInput" Margin="5" Grid.Row="1" TextWrapping="NoWrap" AcceptsReturn="False" FontSize="18" TextAlignment="Center">Amogus</TextBox>
+                    <TextBox Name="TB_SearchInput" Margin="5" Grid.Row="1" TextWrapping="NoWrap" AcceptsReturn="False" FontSize="18" TextAlignment="Center">Enter search query here</TextBox>
                     <Button Margin="5" Width="100" Grid.Row="2" HorizontalAlignment="Center" Click="B_Search">Search</Button>
                 </Grid>
             </Border>
@@ -47,7 +47,7 @@
                     <TextBlock Margin="5" Grid.Row="0" TextWrapping="WrapWithOverflow" TextAlignment="Center">Login with your username below or create a new account</TextBlock>
                     <TextBlock Grid.Row="1" TextAlignment="Center" Name="TB_LoggedInAs"></TextBlock>
                     <UniformGrid Grid.Row="2" Columns="2">
-                        <TextBox Name="TB_Username" MaxLength="16" Margin="5" TextWrapping="NoWrap" AcceptsReturn="False" FontSize="13" TextAlignment="Center">Amogus</TextBox>
+                        <TextBox Name="TB_Username" MaxLength="16" Margin="5" TextWrapping="NoWrap" AcceptsReturn="False" FontSize="13" TextAlignment="Center"></TextBox>
                         <PasswordBox Name="PB_Password" MaxLength="16" Margin="5"></PasswordBox>
                     </UniformGrid>
                     <UniformGrid Grid.Row="3" Columns="2">

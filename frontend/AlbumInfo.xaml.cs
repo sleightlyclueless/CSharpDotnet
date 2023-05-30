@@ -22,7 +22,7 @@ namespace frontend
     {
 
         private string QuerySongsFromAlbum = "http://localhost:5073/song/getAllByAlbumID?id=";
-        private string QueryArtistByArtistID = "http://localhost:5073/artist/getByID?id=";
+        private string QueryArtistByArtistID = "http://localhost:5073/artist/";
 
 
         public string AlbumName;

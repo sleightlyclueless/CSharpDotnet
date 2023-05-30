@@ -20,8 +20,8 @@ namespace frontend
     /// </summary>
     public partial class SongInfo : Window
     {
-        private const string queryArtistById = "http://localhost:5073/artist/getByID?id="; // Get Artist belonging to this Song
-        private const string queryAlbumById = "http://localhost:5073/album/getByID?id="; // Get Album belonging to this Song
+        private const string queryArtistById = "http://localhost:5073/artist/"; // Get Artist belonging to this Song
+        private const string queryAlbumById = "http://localhost:5073/album/"; // Get Album belonging to this Song
 
         public string SongTitle;
         public int Duration;

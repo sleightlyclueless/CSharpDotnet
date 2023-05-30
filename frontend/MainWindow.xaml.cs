@@ -24,15 +24,18 @@ namespace frontend
         List<Song> loadedSongs;
         List<Artist> loadedArtists;
         Artist? loggedInAs = null;
+        MyPage? myPageOpen = null;
         static string querySearchSongBySubstring = "http://localhost:5073/song/getAllByTitle?title="; // Get all songs containing a substring in title
         static string querySearchArtistBySubstring = "http://localhost:5073/artist/getByName?name="; // get all artists by substr
         static string querySearchAlbumBySubstring = "http://localhost:5073/album/getByName?name=";          // get all albums by substr
         static string querySearchArtistByExactName = "http://localhost:5073/artist/getByExactName?name=";
-        static string queryAlbumByID = "http://localhost:5073/album/getByID?id=";
-        static string queryArtistByID = "http://localhost:5073/artist/getByID?id=";
-        static string putArtistByID = "http://localhost:5073/artist/update?id=";
+        static string queryAlbumByID = "http://localhost:5073/album/";
+        static string queryArtistByID = "http://localhost:5073/artist/";
+        
         static string querySearchArtistByName = "http://localhost:5073/artist/getByName?name=";
 
+
+        /*
         public static async Task postUserToDB(string username, string firstname, string lastname, string pwhash)
         {
             var client = new HttpClient();
@@ -65,9 +68,9 @@ namespace frontend
             }
             catch (Exception)
             {
-                MessageBox.Show("Something went wrong while logging in");
+                MessageBox.Show("Something went wrong while registering");
             }
-        }
+        }*/
 
         // http get request to search for string
         public static async Task<string> SearchSongByString(string s)
@@ -243,11 +246,11 @@ namespace frontend
 
         private void B_Search(object sender, RoutedEventArgs e)
         {
-            if (loggedInAs == null)
+            /*if (loggedInAs == null)
             {
                 MessageBox.Show("You are not logged in");
                 return;
-            }
+            }*/
             
             string s = TB_SearchInput.Text;
             var dataSongs = Task.Run(() => SearchSongByString(s));
@@ -410,15 +413,19 @@ namespace frontend
                     // Convert the hash bytes to a hexadecimal string
                     string hashedInput = BitConverter.ToString(hashBytes).Replace("-", "");
 
-                    //Clipboard.SetText(hashedInput);
-
-                    if (hashedInput == foundArtist.password)
+                   
+                    if (hashedInput == foundArtist.password) // Logged in
                     {
                         loggedInAs = foundArtist;
                         MessageBox.Show("Logged in as " + loggedInAs.artistName);
-                        // Change functionality
+                        // Change functionality / set texts
                         B_Login.Content = "Logout";
+                        B_Register.Content = "My Page";
                         TB_LoggedInAs.Text = "Logged in as " + loggedInAs.artistName;
+
+                        TB_Username.Clear();
+                        PB_Password.Clear();
+                        
                     }
                     else
                     {
@@ -433,28 +440,35 @@ namespace frontend
                 B_Login.Content = "Login";
                 TB_LoggedInAs.Text = "";
 
-                loadedSongs = new List<Song>();
-                loadedArtists = new List<Artist>();
-                loadedAlbums = new List<Album>();
+                B_Register.Content = "Register";
 
-
-                LB_Songs.ItemsSource = loadedSongs; // Den Inhalt der LB auf die liste setzen
-                LB_Songs.DisplayMemberPath = "title"; // das Anzeigeattribut auf Title setzen
-
-                // Gleiches für Album u Artist
-                LB_Albums.ItemsSource = loadedAlbums;
-                LB_Albums.DisplayMemberPath = "albumName";
-
-                LB_Artists.ItemsSource = loadedArtists;
-                LB_Artists.DisplayMemberPath = "artistName";
+                if(myPageOpen != null)
+                {
+                    myPageOpen.Close();
+                }
+              
             }
 
         }
 
         private void B_Register_Click(object sender, RoutedEventArgs e)
         {
-            Register rwnd = new Register();
-            rwnd.Show();
+            if(loggedInAs == null)
+            {
+                Register rwnd = new Register();
+                rwnd.Show();
+            }
+            else
+            {
+                if(myPageOpen == null) 
+                {
+                    // Show my page
+                    myPageOpen = new MyPage(loggedInAs.artistID, loggedInAs.firstName, loggedInAs.lastName, loggedInAs.artistName);
+                    myPageOpen.Show();
+                }
+               
+            }
+
         }
     }
 }

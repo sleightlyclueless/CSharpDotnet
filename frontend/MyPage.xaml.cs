@@ -19,7 +19,7 @@ namespace frontend
     /// <summary>
     /// Interaction logic for ArtistInfo.xaml
     /// </summary>
-    public partial class ArtistInfo : Window
+    public partial class MyPage : Window
     {
         
         private const string querySongsByArtistID = "http://localhost:5073/song/getAllByArtistID?id="; // Get all songs by artist ID
@@ -88,7 +88,7 @@ namespace frontend
             }
         }
        
-        public ArtistInfo(int id, string firstName, string lastName, string artistName)
+        public MyPage(int id, string firstName, string lastName, string artistName)
         {
             InitializeComponent();
 
@@ -98,8 +98,8 @@ namespace frontend
             this.artistName = artistName;
           
             TB_ID.Text = id.ToString();
-            //TB_Fname.Text = firstName;
-            //TB_Lname.Text = lastName;
+            TB_Fname.Text = firstName;
+            TB_Lname.Text = lastName;
             TB_ArtistName.Text = artistName;
 
             LB_Albums.ItemsSource = getAlbumsFromArtist();

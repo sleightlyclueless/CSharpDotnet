@@ -24,6 +24,10 @@ namespace frontend
     /// </summary>
     public partial class Register : Window
     {
+
+        static string putArtistByID = "http://localhost:5073/artist/";
+        static string querySearchArtistByExactName = "http://localhost:5073/artist/getByExactName?name=";
+
         public Register()
         {
             InitializeComponent();
@@ -47,10 +51,42 @@ namespace frontend
                 MessageBox.Show("Please fill out all fields.");
                 return; // Stop further execution
             }
+
+            // Check if name is taken already
+            if(getArtistByExactName(artistname) != null ) 
+            {
+                MessageBox.Show("This username is already taken!");
+                return;         
+            }
+
             await PostUserToDB(artistname, firstname, lastname, password);
+
+            this.Close();
         }
 
-        public static async Task PostUserToDB(
+        private static Artist getArtistByExactName(string username)
+        {
+            // Get the artist
+            var data = Task.Run(() => MainWindow.getRequestUrlOneParam(querySearchArtistByExactName, username));
+            data.Wait();
+
+            // Auswerten der Response
+            var response = data.Result;
+            if (response == "-1" || response == null)
+            {
+                return null;
+            }
+
+            List<Artist> ar = JsonConvert.DeserializeObject<List<Artist>>(response);
+            if (ar.Count == 0)
+            {
+                return null;
+            }
+
+            return ar[0];
+        }
+
+        public async Task PostUserToDB(
             string artistname,
             string firstname,
             string lastname,
@@ -72,7 +108,7 @@ namespace frontend
                 using (HttpClient client = new HttpClient())
                 {
                     // Set the request URL
-                    string requestUrl = "http://localhost:5073/artist";
+                    string requestUrl = putArtistByID;
 
                     // Create the HTTP content with the JSON data
                     HttpContent content = new StringContent(
@@ -87,7 +123,7 @@ namespace frontend
                     // Check the response status
                     if (response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show("User created!");
+                        MessageBox.Show("User created!");                     
                     }
                     else
                     {
