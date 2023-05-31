@@ -23,9 +23,6 @@ jobs:
 
       - name: Restore NuGet packages
         run: dotnet restore frontend
-        
-      - name: Navigate to frontend folder
-        run: cd frontend
 
       - name: Build project
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release frontend
