@@ -19,13 +19,13 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
-
-      - name: Navigate to frontend folder
-        run: cd frontend
+          dotnet-version: '7.0.x'
 
       - name: Restore NuGet packages
-        run: dotnet restore
+        run: dotnet restore frontend
+        
+      - name: Navigate to frontend folder
+        run: cd frontend
 
       - name: Build project
         run: dotnet build --configuration Release
