@@ -36,15 +36,15 @@ namespace frontend
         private async void Register_Click(object sender, RoutedEventArgs e)
         {
             // Retrieve the values from the input fields
-            string artistname = ArtistNameTB.Text;
             string firstname = FirstNameTB.Text;
             string lastname = LastNameTB.Text;
+            string artistname = ArtistNameTB.Text;
             string password = PasswordTB.Password;
 
             if (
-                string.IsNullOrWhiteSpace(artistname)
-                || string.IsNullOrWhiteSpace(firstname)
+                string.IsNullOrWhiteSpace(firstname)
                 || string.IsNullOrWhiteSpace(lastname)
+                || string.IsNullOrWhiteSpace(artistname) 
                 || string.IsNullOrWhiteSpace(password)
             )
             {
@@ -59,7 +59,7 @@ namespace frontend
                 return;         
             }
 
-            await PostUserToDB(artistname, firstname, lastname, password);
+            await PostUserToDB(firstname, lastname, artistname, password);
 
             this.Close();
         }
@@ -87,9 +87,9 @@ namespace frontend
         }
 
         public async Task PostUserToDB(
-            string artistname,
             string firstname,
             string lastname,
+            string artistname,
             string password
         )
         {
@@ -99,7 +99,7 @@ namespace frontend
                 string hashedPassword = HashPassword(password);
 
                 // Create the Artist object with the provided details
-                Artist artist = new Artist(artistname, firstname, lastname, hashedPassword);
+                Artist artist = new Artist(firstname, lastname, artistname, hashedPassword);
 
                 // Serialize the Artist object to JSON
                 string jsonData = JsonConvert.SerializeObject(artist);
