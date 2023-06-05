@@ -65,4 +65,5 @@ In this example we use the *MySQL Workbench 8.0.33*. You could of course use any
 |Task 4|    1   |
 |Task 5|    1   |
 |Task 6|    3   |
-|Task 7|   wip  |
+|Task 7|   1-2  |
+> What´s the extra task? "Impelementing CI/CD" over github in /.github/workflows
