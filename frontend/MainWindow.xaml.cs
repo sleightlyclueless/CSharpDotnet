@@ -9,6 +9,8 @@ using System.Text;
 using System.Security.Policy;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
 
 namespace frontend
 {
@@ -445,6 +447,7 @@ namespace frontend
                 if(myPageOpen != null)
                 {
                     myPageOpen.Close();
+                    myPageOpen = null;
                 }
               
             }
@@ -460,7 +463,7 @@ namespace frontend
             }
             else
             {
-                if(myPageOpen == null) 
+                if (myPageOpen == null || !myPageOpen.IsLoaded) 
                 {
                     // Show my page
                     myPageOpen = new MyPage(loggedInAs.artistID, loggedInAs.firstName, loggedInAs.lastName, loggedInAs.artistName);
