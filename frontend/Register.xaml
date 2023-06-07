@@ -1,0 +1,74 @@
+﻿<Window x:Class="frontend.Register"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:frontend"
+        mc:Ignorable="d"
+        Title="Register" Height="250" Width="250">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Register:" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="First Name:" VerticalAlignment="Center" Margin="5" MinWidth="80" />
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Name="FirstNameTB" />
+
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Last Name:" VerticalAlignment="Center" Margin="5" MinWidth="80" />
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Name="LastNameTB" />
+
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Artist Name:" VerticalAlignment="Center" Margin="5" MinWidth="80" />
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Name="ArtistNameTB" />
+
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Password:" VerticalAlignment="Center" Margin="5" MinWidth="80" />
+            <PasswordBox Grid.Row="0" Grid.Column="1" Margin="5" Name="PasswordTB"/>
+
+        </Grid>
+
+        <Grid Grid.Row="5" Margin="20px">
+            <Button Grid.ColumnSpan="2" Content="Register" HorizontalAlignment="Center" Margin="5" Click="Register_Click" />
+        </Grid>
+
+    </Grid>
+</Window>
+

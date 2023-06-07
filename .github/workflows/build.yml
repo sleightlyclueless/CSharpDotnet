@@ -1,0 +1,29 @@
+name: Build WPF Project
+
+on:
+  push:
+    branches:
+      - merged
+  pull_request:
+    branches:
+      - merged
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore frontend
+
+      - name: Build project
+        run: dotnet build --configuration Release frontend
+

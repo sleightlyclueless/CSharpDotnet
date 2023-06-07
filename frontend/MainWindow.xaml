@@ -1,0 +1,102 @@
+﻿<Window x:Class="frontend.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:frontend"
+        mc:Ignorable="d"
+        Title="Beat Browser XD" Height="450" Width="800"
+        ResizeMode="NoResize">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Upper grid-->
+        <UniformGrid Margin="10" Rows="1"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Grid.Row="0">
+            <!--First column upper-->
+            <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="5" Grid.Row="0" TextWrapping="WrapWithOverflow" TextAlignment="Center">Enter song name, artist name or album name to search:</TextBlock>
+                    <TextBox Name="TB_SearchInput" Margin="5" Grid.Row="1" TextWrapping="NoWrap" AcceptsReturn="False" FontSize="18" TextAlignment="Center">Enter search query here</TextBox>
+                    <Button Margin="5" Width="100" Grid.Row="2" HorizontalAlignment="Center" Click="B_Search">Search</Button>
+                </Grid>
+            </Border>
+            <!--Placeholder for login-->
+            <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1" Margin="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="5" Grid.Row="0" TextWrapping="WrapWithOverflow" TextAlignment="Center">Login with your username below or create a new account</TextBlock>
+                    <TextBlock Grid.Row="1" TextAlignment="Center" Name="TB_LoggedInAs"></TextBlock>
+                    <UniformGrid Grid.Row="2" Columns="2">
+                        <TextBox Name="TB_Username" MaxLength="16" Margin="5" TextWrapping="NoWrap" AcceptsReturn="False" FontSize="13" TextAlignment="Center"></TextBox>
+                        <PasswordBox Name="PB_Password" MaxLength="16" Margin="5"></PasswordBox>
+                    </UniformGrid>
+                    <UniformGrid Grid.Row="3" Columns="2">
+                        <Button Grid.Column="0"   Margin="5" Name="B_Login" Click="B_Login_Click">Login</Button>
+                        <Button Grid.Column="1"   Margin="5" Name="B_Register" Click="B_Register_Click">Register</Button>
+                    </UniformGrid>
+                </Grid>
+            </Border>
+        </UniformGrid>
+
+        <!--Lower grid (lists)-->
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+        
+            <!--Titel der Listen-->
+            <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1" Margin="1" Grid.Row="0">
+                <UniformGrid Margin="10" Rows="1">
+                    <Label HorizontalAlignment="Center">Songs</Label>
+                    <Label HorizontalAlignment="Center">Albums</Label>
+                    <Label HorizontalAlignment="Center">Artists</Label>
+                </UniformGrid>
+            </Border>
+            <!--Listen-->
+            <UniformGrid Margin="10" Rows="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Grid.Row="1">
+                <!--Songs list-->
+                <ListBox Name="LB_Songs" Margin="5" Padding="6,3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="LB_SongsSelectionChanged">
+                </ListBox>
+
+                <!--Album list-->
+                <ListBox Name="LB_Albums" Margin="5" Padding="6,3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="LB_AlbumSelectionChanged">
+                </ListBox>
+                <!--Artist list-->
+                <ListBox Name="LB_Artists" Margin="5" Padding="6,3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="LB_ArtistSelectionChanged">
+                </ListBox>
+
+            </UniformGrid>
+            <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1" Margin="1" Grid.Row="2">
+                <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1" Click="AmogusButtonClick">Amogus button</Button>
+            </Border>
+        </Grid>
+
+    </Grid>
+</Window>
+
