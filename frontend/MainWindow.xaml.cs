@@ -27,6 +27,11 @@ namespace frontend
         List<Artist> loadedArtists;
         Artist? loggedInAs = null;
         MyPage? myPageOpen = null;
+        static string queryAllAlbums = "http://localhost:5073/album";
+        static string queryAllArtists = "http://localhost:5073/artist";
+        static string queryAllSongs= "http://localhost:5073/song";
+
+
         static string querySearchSongBySubstring = "http://localhost:5073/song/getAllByTitle?title="; // Get all songs containing a substring in title
         static string querySearchArtistBySubstring = "http://localhost:5073/artist/getByName?name="; // get all artists by substr
         static string querySearchAlbumBySubstring = "http://localhost:5073/album/getByName?name=";          // get all albums by substr
@@ -37,42 +42,51 @@ namespace frontend
         static string querySearchArtistByName = "http://localhost:5073/artist/getByName?name=";
 
 
-        /*
-        public static async Task postUserToDB(string username, string firstname, string lastname, string pwhash)
+        // fetch all on empty search
+        private async Task<string> GetAllSongs()
         {
             var client = new HttpClient();
-
-            JObject jobject = new JObject();
-            jobject["firstName"] = firstname;
-            jobject["username"] = username;
-            jobject["password"] = pwhash;
-            jobject["lastname"] = lastname;
-
-            var jsonData = jobject.ToString();
             try
             {
-                // Create the HTTP content with the JSON data
-                HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-                // Send the POST request
-                HttpResponseMessage response = await client.PostAsync(putArtistByID, content);
-
-                // Check the response status
-                if (response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("POST request was successful");
-                }
-                else
-                {
-                    Console.WriteLine("POST request failed with status code: " + response.StatusCode);
-                }
-               
+                HttpResponseMessage response = await client.GetAsync(queryAllSongs);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
             }
             catch (Exception)
             {
-                MessageBox.Show("Something went wrong while registering");
+                return "-1";
             }
-        }*/
+        }
+
+        private async Task<string> GetAllArtists()
+        {
+            var client = new HttpClient();
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(queryAllArtists);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+                return "-1";
+            }
+        }
+
+        private async Task<string> GetAllAlbums()
+        {
+            var client = new HttpClient();
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(queryAllAlbums);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+                return "-1";
+            }
+        }
 
         // http get request to search for string
         public static async Task<string> SearchSongByString(string s)
@@ -157,7 +171,32 @@ namespace frontend
                 return "-1";
             }
         }
-        
+
+        private async Task LoadAllData()
+        {
+            string songsResponse = await GetAllSongs();
+            if (songsResponse != "-1")
+            {
+                loadedSongs = JsonConvert.DeserializeObject<List<Song>>(songsResponse);
+                LB_Songs.ItemsSource = loadedSongs;
+            }
+
+            string artistsResponse = await GetAllArtists();
+            if (artistsResponse != "-1")
+            {
+                loadedArtists = JsonConvert.DeserializeObject<List<Artist>>(artistsResponse);
+                LB_Artists.ItemsSource = loadedArtists;
+            }
+
+            string albumsResponse = await GetAllAlbums();
+            if (albumsResponse != "-1")
+            {
+                loadedAlbums = JsonConvert.DeserializeObject<List<Album>>(albumsResponse);
+                LB_Albums.ItemsSource = loadedAlbums;
+            }
+        }
+
+
         private static Album GetAlbumFromSong(Song song)
         {
             var data = Task.Run(() => getRequestUrlOneParam(queryAlbumByID, song.albumID.ToString()));
@@ -253,7 +292,15 @@ namespace frontend
                 MessageBox.Show("You are not logged in");
                 return;
             }*/
-            
+            // Check for empty search
+            string searchTerm = TB_SearchInput.Text.Trim();
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                // If the search term is empty, load all data
+                LoadAllData();
+                return;
+            }
+
             string s = TB_SearchInput.Text;
             var dataSongs = Task.Run(() => SearchSongByString(s));
             dataSongs.Wait();
